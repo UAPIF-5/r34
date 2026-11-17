@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1e3a5f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="R-34">
+  <title>Reporte R-34</title>
+
+  <!-- Ícono incrustado para Apple (iPhone/iPad) y Android -->
+  <link id="apple-icon" rel="apple-touch-icon">
+  <link id="fav-icon" rel="icon" type="image/png">
+  <link id="manifest-link" rel="manifest">
+
+  <style>
+    :root {
+      --primary: #1e3a5f;
+      --bg: #eef1f5;
+      --card: #ffffff;
+      --text: #111111;
+      --border: #b8c0cc;
+      --success: #198754;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: 12px;
+      background-color: var(--bg);
+      color: var(--text);
+    }
+
+    .header {
+      background-color: var(--primary);
+      color: white;
+      padding: 14px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 1.4rem;
+      letter-spacing: 0.5px;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 14px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    }
+
+    .section-block {
+      margin-bottom: 14px;
+    }
+
+    .section-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .col {
+      flex: 1;
+      min-width: 0;
+    }
+
+    label.field-title {
+      display: block;
+      font-weight: 800;
+      font-size: 0.92rem;
+      margin-bottom: 8px;
+      color: #222;
+      text-transform: uppercase;
+    }
+
+    input[type="text"],
+    input[type="time"] {
+      width: 100%;
+      padding: 13px 10px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      background-color: #fff;
+      color: var(--text);
+      text-align: center;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background-color: #f4f8ff;
+    }
+
+    .hora-wrapper {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-now {
+      padding: 0 18px;
+      background-color: #dde3ec;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 1rem;
+      color: #111;
+      cursor: pointer;
+    }
+
+    .chip-btn {
+      position: relative;
+      display: block;
+    }
+
+    .chip-btn input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .chip-btn span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 4px;
+      background: #f5f7fa;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .chip-btn input:checked + span {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .torres-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .viento-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .viento-calmo {
+      grid-column: span 4;
+    }
+
+    .octavos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .preview-box {
+      width: 100%;
+      background: #f1f3f5;
+      padding: 14px;
+      border-radius: 10px;
+      font-family: monospace;
+      font-size: 1.08rem;
+      font-weight: 600;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      border: 2px solid #adb5bd;
+      margin-bottom: 12px;
+      color: #000;
+      resize: none;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 18px;
+      font-size: 1.2rem;
+      font-weight: 800;
+      text-align: center;
+      text-decoration: none;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .btn-copy {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-copy:active {
+      background-color: #142842;
+    }
+
+    .btn-clear {
+      background-color: #ffffff;
+      color: #333;
+      border: 2px solid var(--border);
+      font-size: 1rem;
+      padding: 13px;
+      margin-bottom: 0;
+    }
+
+    .overlay-aviso {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 20px;
+    }
+
+    .cartel-grande {
+      background-color: var(--success);
+      color: #ffffff;
+      padding: 36px 24px;
+      border-radius: 18px;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+      border: 4px solid #ffffff;
+      width: 100%;
+      max-width: 360px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>REPORTE R-34</h1>
+  </div>
+
+  <!-- 1. HORA Y TORRE -->
+  <div class="card">
+    <div class="section-block">
+      <label class="field-title" for="hora">1. Hora del reporte</label>
+      <div class="hora-wrapper">
+        <input type="time" id="hora" onchange="actualizarVistaPrevia()" oninput="actualizarVistaPrevia()">
+        <button type="button" class="btn-now" onclick="ponerHoraActual(); actualizarVistaPrevia();">Ahora</button>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <label class="field-title">2. Seleccione su Torre</label>
+      <div class="torres-grid">
+        <label class="chip-btn"><input type="radio" name="torre" value="BT" checked onchange="guardarYActualizar()"><span>BT</span></label>
+        <label class="chip-btn"><input type="radio" name="torre" value="CT" onchange="guardarYActualizar()"><span>CT</span></label>
+        <label class="chip-btn"><input type="radio" name="torre" value="DT" onchange="guardarYActualizar()"><span>DT</span></label>
+        <label class="chip-btn"><input type="radio" name="torre" value="ET" onchange="guardarYActualizar()"><span>ET</span></label>
+        <label class="chip-btn"><input type="radio" name="torre" value="KT" onchange="guardarYActualizar()"><span>KT</span></label>
+        <label class="chip-btn"><input type="radio" name="torre" value="LT" onchange="guardarYActualizar()"><span>LT</span></label>
+        <label class="chip-btn"><input type="radio" name="torre" value="RT" onchange="guardarYActualizar()"><span>RT</span></label>
+        <label class="chip-btn"><input type="radio" name="torre" value="ST" onchange="guardarYActualizar()"><span>ST</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. MEDICIONES -->
+  <div class="card">
+    <label class="field-title">3. Datos del tiempo</label>
+    <div class="row">
+      <div class="col">
+        <label class="field-title" for="temp" style="font-size:0.8rem;">Temp (°C)</label>
+        <input type="text" id="temp" inputmode="decimal" placeholder="18.0" oninput="limpiarDecimal(this); actualizarVistaPrevia();">
+      </div>
+      <div class="col">
+        <label class="field-title" for="hr" style="font-size:0.8rem;">HR (%)</label>
+        <input type="text" id="hr" inputmode="decimal" placeholder="72" oninput="limpiarDecimal(this); actualizarVistaPrevia();">
+      </div>
+      <div class="col">
+        <label class="field-title" for="viento" style="font-size:0.8rem;">Viento (km/h)</label>
+        <input type="text" id="viento" inputmode="decimal" placeholder="2.7" oninput="limpiarDecimal(this); actualizarVistaPrevia();">
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. DIRECCIÓN DEL VIENTO -->
+  <div class="card">
+    <div class="section-block">
+      <label class="field-title">4. Dirección del Viento</label>
+      <div class="viento-grid">
+        <label class="chip-btn"><input type="radio" name="direccion" value="N" onchange="actualizarVistaPrevia()"><span>N</span></label>
+        <label class="chip-btn"><input type="radio" name="direccion" value="NNE" onchange="actualizarVistaPrevia()"><span>NNE</span></label>
+        <label class="chip-btn"><input type="radio" name="direccion" value="NE" onchange="actualizarVistaPrevia()"><span>NE</span></label>
+        <label class="chip-btn"><input type="radio" name="direccion" value="ENE" onchange="actualizarVistaPrevia()"><span>ENE</span></label>
+
+        <label class="chip-btn"><input type="radio" name="direccion" value="E" onchange="actualizarVistaPrevia()"><span>E</span></label>
+        <label class="chip-btn"><input type="radio" name="direccion" value="ESE" onchange="actualizarVistaPrevia()"><span>ESE</span></label>
+        <label class="chip-btn"><input type="radio" name="direccion" value="SE" onchange="actualizarVistaPrevia()"><span>SE</span></label>
+        <label class="chip-btn"><input type="radio" name="direccion" value="SSE" onchange="actualizarVistaPrevia()"><span>SSE</span></label>
+
+        <label class="chip-btn"><input type="radio" name="direccion" value="S" onchange="actualizarVistaPrevia()"><span>S</span></label>
+        <label class="chip-btn"><input type="radio" name="direccion" value="SSW" onchange="actualizarVistaPrevia()"><span>SSW</span></label>
+        <label class="chip-btn"><input type="radio" name="direccion" value="SW" onchange="actualizarVistaPrevia()"><span>SW</span></label>
+        <label class="chip-btn"><input type="radio" name="direccion" value="WSW" onchange="actualizarVistaPrevia()"><span>WSW</span></label>
+
+        <label class="chip-btn"><input type="radio" name="direccion" value="W" checked onchange="actualizarVistaPrevia()"><span>W</span></label>
+        <label class="chip-btn"><input type="radio" name="direccion" value="WNW" onchange="actualizarVistaPrevia()"><span>WNW</span></label>
+        <label class="chip-btn"><input type="radio" name="direccion" value="NW" onchange="actualizarVistaPrevia()"><span>NW</span></label>
+        <label class="chip-btn"><input type="radio" name="direccion" value="NNW" onchange="actualizarVistaPrevia()"><span>NNW</span></label>
+
+        <label class="chip-btn viento-calmo"><input type="radio" name="direccion" value="Calmo" onchange="actualizarVistaPrevia()"><span>Calmo (0)</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. NUBOSIDAD -->
+  <div class="card">
+    <div class="section-block">
+      <label class="field-title">5. Nubosidad</label>
+      <div class="octavos-grid">
+        <label class="chip-btn"><input type="radio" name="nubosidad" value="0/8" onchange="actualizarVistaPrevia()"><span>0/8</span></label>
+        <label class="chip-btn"><input type="radio" name="nubosidad" value="1/8" onchange="actualizarVistaPrevia()"><span>1/8</span></label>
+        <label class="chip-btn"><input type="radio" name="nubosidad" value="2/8" onchange="actualizarVistaPrevia()"><span>2/8</span></label>
+        <label class="chip-btn"><input type="radio" name="nubosidad" value="3/8" onchange="actualizarVistaPrevia()"><span>3/8</span></label>
+        <label class="chip-btn"><input type="radio" name="nubosidad" value="4/8" onchange="actualizarVistaPrevia()"><span>4/8</span></label>
+        <label class="chip-btn"><input type="radio" name="nubosidad" value="5/8" onchange="actualizarVistaPrevia()"><span>5/8</span></label>
+        <label class="chip-btn"><input type="radio" name="nubosidad" value="6/8" checked onchange="actualizarVistaPrevia()"><span>6/8</span></label>
+        <label class="chip-btn"><input type="radio" name="nubosidad" value="7/8" onchange="actualizarVistaPrevia()"><span>7/8</span></label>
+        <label class="chip-btn"><input type="radio" name="nubosidad" value="8/8" onchange="actualizarVistaPrevia()"><span>8/8</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. COPIAR Y LIMPIAR -->
+  <div class="card">
+    <label class="field-title" for="preview">6. Revise y copie el mensaje</label>
+    <textarea class="preview-box" id="preview" rows="7" readonly></textarea>
+
+    <button type="button" class="btn btn-copy" onclick="copiarTexto()">COPIAR MENSAJE</button>
+    <button type="button" class="btn btn-clear" onclick="limpiarDatos()">LIMPIAR TODO</button>
+  </div>
+
+  <!-- CARTEL GRANDE DE CONFIRMACIÓN -->
+  <div class="overlay-aviso" id="overlayAviso" onclick="cerrarAviso()">
+    <div class="cartel-grande" id="cartelTexto">✓<br>MENSAJE COPIADO</div>
+  </div>
+
+  <script>
+    // 1. Generar ícono PNG en memoria automáticamente para Apple y Android
+    (function configurarIconosPWA() {
+      try {
+        var canvas = document.createElement('canvas');
+        canvas.width = 512;
+        canvas.height = 512;
+        var ctx = canvas.getContext('2d');
+
+        // Fondo azul marino
+        ctx.fillStyle = '#1e3a5f';
+        ctx.fillRect(0, 0, 512, 512);
+
+        // Franja verde inferior
+        ctx.fillStyle = '#1b5e20';
+        ctx.fillRect(0, 360, 512, 152);
+
+        // Caseta de torre (naranja y blanco)
+        ctx.fillStyle = '#e65100';
+        ctx.beginPath();
+        ctx.moveTo(156, 120);
+        ctx.lineTo(256, 65);
+        ctx.lineTo(356, 120);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(176, 120, 160, 55);
+
+        // Estructura metálica
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 12;
+        ctx.beginPath();
+        ctx.moveTo(190, 175); ctx.lineTo(150, 360);
+        ctx.moveTo(322, 175); ctx.lineTo(362, 360);
+        ctx.moveTo(190, 175); ctx.lineTo(342, 270);
+        ctx.moveTo(322, 175); ctx.lineTo(170, 270);
+        ctx.moveTo(170, 270); ctx.lineTo(362, 360);
+        ctx.moveTo(342, 270); ctx.lineTo(150, 360);
+        ctx.stroke();
+
+        // Texto R-34 grande
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 96px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('R-34', 256, 442);
+
+        var pngDataUrl = canvas.toDataURL('image/png');
+        document.getElementById('apple-icon').href = pngDataUrl;
+        document.getElementById('fav-icon').href = pngDataUrl;
+
+        // Manifiesto dinámico para instalación en Android/Chrome
+        var manifest = {
+          name: 'Reporte R-34',
+          short_name: 'R-34',
+          start_url: location.href,
+          display: 'standalone',
+          background_color: '#eef1f5',
+          theme_color: '#1e3a5f',
+          icons: [{ src: pngDataUrl, sizes: '512x512', type: 'image/png' }]
+        };
+        var manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+        document.getElementById('manifest-link').href = URL.createObjectURL(manifestBlob);
+      } catch (e) {}
+    })();
+
+    // 2. Registro de Service Worker externo (compatible con iPhone y Android sin señal)
+    if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+      navigator.serviceWorker.register('./sw.js').catch(function(){});
+    }
+
+    function iniciarApp() {
+      try {
+        var torreGuardada = localStorage.getItem('torreSeleccionadaR34');
+        if (torreGuardada) {
+          var radioTorre = document.querySelector('input[name="torre"][value="' + torreGuardada + '"]');
+          if (radioTorre) radioTorre.checked = true;
+        }
+      } catch (e) {}
+
+      ponerHoraActual();
+      actualizarVistaPrevia();
+    }
+
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden) {
+        ponerHoraActual();
+        actualizarVistaPrevia();
+      }
+    });
+
+    function limpiarDecimal(campo) {
+      var valor = campo.value.replace(/,/g, '.').replace(/[^0-9.\-]/g, '');
+      var partes = valor.split('.');
+      if (partes.length > 2) {
+        valor = partes[0] + '.' + partes.slice(1).join('');
+      }
+      campo.value = valor;
+    }
+
+    function ponerHoraActual() {
+      var ahora = new Date();
+      var horas = String(ahora.getHours()).padStart(2, '0');
+      var minutos = String(ahora.getMinutes()).padStart(2, '0');
+      document.getElementById('hora').value = horas + ':' + minutos;
+    }
+
+    function guardarYActualizar() {
+      try {
+        var torre = document.querySelector('input[name="torre"]:checked').value;
+        localStorage.setItem('torreSeleccionadaR34', torre);
+      } catch (e) {}
+      actualizarVistaPrevia();
+    }
+
+    function generarMensaje() {
+      var hora = document.getElementById('hora').value || '--:--';
+      var torreEl = document.querySelector('input[name="torre"]:checked');
+      var torre = torreEl ? torreEl.value : 'BT';
+
+      var tempVal = document.getElementById('temp').value.trim();
+      var temp = tempVal !== '' ? tempVal + '°C' : '--°C';
+
+      var vientoVal = document.getElementById('viento').value.trim();
+      var viento = vientoVal !== '' ? vientoVal + ' km/h' : '-- km/h';
+
+      var dirEl = document.querySelector('input[name="direccion"]:checked');
+      var direccion = dirEl ? dirEl.value : 'W';
+
+      var hrVal = document.getElementById('hr').value.trim();
+      var hr = hrVal !== '' ? hrVal + '%' : '--%';
+
+      var nubEl = document.querySelector('input[name="nubosidad"]:checked');
+      var nubosidad = nubEl ? nubEl.value : '6/8';
+
+      return '*R-34: ' + torre + '*\n' +
+             '*T:* ' + temp + '\n' +
+             '*Viento:*  ' + viento + '\n' +
+             '*Dirección:*  ' + direccion + '\n' +
+             '*HR:*  ' + hr + '\n' +
+             '*Nubosidad:*  ' + nubosidad + '\n' +
+             '*Hora:* ' + hora;
+    }
+
+    function actualizarVistaPrevia() {
+      document.getElementById('preview').value = generarMensaje();
+    }
+
+    var temporizadorAviso;
+
+    function mostrarCartelGrande(htmlTexto, colorFondo) {
+      var overlay = document.getElementById('overlayAviso');
+      var cartel = document.getElementById('cartelTexto');
+      cartel.innerHTML = htmlTexto;
+      cartel.style.backgroundColor = colorFondo;
+      overlay.style.display = 'flex';
+
+      clearTimeout(temporizadorAviso);
+      temporizadorAviso = setTimeout(function() {
+        overlay.style.display = 'none';
+      }, 2200);
+    }
+
+    function cerrarAviso() {
+      document.getElementById('overlayAviso').style.display = 'none';
+    }
+
+    function copiarTexto() {
+      var preview = document.getElementById('preview');
+      preview.select();
+      preview.setSelectionRange(0, 99999);
+
+      var copiado = false;
+      try {
+        copiado = document.execCommand('copy');
+      } catch (err) {
+        copiado = false;
+      }
+
+      if (copiado) {
+        mostrarCartelGrande('✓<br>MENSAJE COPIADO', '#198754');
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(preview.value).then(function() {
+          mostrarCartelGrande('✓<br>MENSAJE COPIADO', '#198754');
+        }).catch(function() {
+          mostrarCartelGrande('MANTENGA PRESIONADO EL TEXTO PARA COPIAR', '#b02a37');
+        });
+      } else {
+        mostrarCartelGrande('MANTENGA PRESIONADO EL TEXTO PARA COPIAR', '#b02a37');
+      }
+    }
+
+    function limpiarDatos() {
+      document.getElementById('temp').value = '';
+      document.getElementById('viento').value = '';
+      document.getElementById('hr').value = '';
+      ponerHoraActual();
+      actualizarVistaPrevia();
+      mostrarCartelGrande('CAMPOS LIMPIOS', '#1e3a5f');
+    }
+
+    iniciarApp();
+    window.addEventListener('DOMContentLoaded', iniciarApp);
+  </script>
+</body>
+</html>
